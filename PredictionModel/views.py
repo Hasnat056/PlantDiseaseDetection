@@ -98,3 +98,5 @@ def predict_image(request):
         return render(request, 'result.html', context)
 
     return render(request, 'upload.html')
+
+
