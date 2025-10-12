@@ -1,12 +1,12 @@
 from celery import shared_task
 from django.shortcuts import get_object_or_404
 
-from .models import Uploads, UserImages
-from django.contrib.auth.models import User
+from .models import Uploads, UserImages, User
 from django.conf import settings
 import os
 from PIL import Image
 import torch
+
 
 # Import your model and preprocessing
 from .pytorch import ResNet9, transform
@@ -107,13 +107,6 @@ def process_plant_disease(image_path, user_id=None):
                 image=upload_record,
                 user=user
             )
-
-        # Clean up temp file if using temp storage
-        if 'temp/' in image_path:
-            try:
-                os.remove(full_path)
-            except:
-                pass
 
         return {
             'success': True,

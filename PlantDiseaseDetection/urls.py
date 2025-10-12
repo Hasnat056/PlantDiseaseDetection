@@ -18,10 +18,40 @@ from django.contrib import admin
 from django.urls import path, include
 from PlantDiseaseDetection import settings
 from django.conf.urls.static import static
-
+from PredictionModel.views import register_view, logout_view, login_view
+from django.contrib.auth import views as auth_views
 urlpatterns = [
-       path('admin/', admin.site.urls),
-       path ('',include('PredictionModel.urls') ),
+    path('admin/', admin.site.urls),
+    path('login/', login_view, name='login'),
+    path('logout/',logout_view,name='logout' ),
+    path('register/', register_view, name='register'),
+    path('password-reset/',auth_views.PasswordResetView.as_view(
+            template_name='registration/password_reset.html',
+            email_template_name='registration/password_reset_email.html',
+            subject_template_name='registration/password_reset_subject.txt',
+            success_url='/password-reset/done/'
+    ),
+        name='password_reset'
+    ),
+
+    # Email Sent Confirmation
+    path('password-reset/done/',auth_views.PasswordResetDoneView.as_view(
+            template_name='registration/password_reset_done.html'),name='password_reset_done'),
+
+    # Password Reset Link (from email)
+    path('reset/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(
+            template_name='registration/password_reset_confirm.html',
+            success_url='/reset/done/'),
+        name='password_reset_confirm'
+    ),
+
+    # Password Successfully Reset
+    path('reset/done/',auth_views.PasswordResetCompleteView.as_view(
+            template_name='registration/password_reset_complete.html'
+        ),
+        name='password_reset_complete'
+    ),
+    path ('',include('PredictionModel.urls') ),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

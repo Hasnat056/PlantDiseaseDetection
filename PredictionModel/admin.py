@@ -1,3 +1,5 @@
 from django.contrib import admin
-
-# Register your models here.
+from .models import *
+admin.site.register(Uploads)
+admin.site.register(UserImages)
+admin.site.register(User)

@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'celery',
+    'rest_framework',
+
     'PredictionModel'
 ]
 
@@ -144,6 +145,17 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 CELERY_WORKER_CONCURRENCY = 4
+CELERY_WORKER_MAX_TASKS_PER_CHILD = 100
+
+# for windows OS
+CELERY_TASK_DEFAULT_QUEUE = 'default'
+CELERY_TASK_ALWAYS_EAGER = False
+CELERY_WORKER_POOL = 'solo'
+
+
+AUTH_USER_MODEL = 'PredictionModel.User'
 
 
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'noreply@plantcareai.com'
